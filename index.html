@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gabriele Mauri</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="widget">
+         <div class="schermata">
+            <div class="meteo_attuale">
+                <div class="meteo_attuale_contenuto">
+                    <div class="sinistra">
+                        <h1 class="temperatura_attuale">28</h1>
+                        <p>Fabbriche di Vergemoli, Lucca</p>
+                    </div>
+                    <div class="destra">
+                        <img src="icone/cloudy.png" class="icona_meteo_attuale">
+                    </div>    
+                </div>
+            </div>  
+        </div>
+        <div class="schermata">
+                <div class="meteo_cinque_ore">
+                    <div class="container">
+                        <div>
+                            <div class="temp_1">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_1">
+                            <div class="ora_1">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_2">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_2">
+                            <div class="ora_2">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_3">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_3">
+                            <div class="ora_3">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_4">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_4">
+                            <div class="ora_4">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_5">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_5">
+                            <div class="ora_5">Ora</div>
+                        </div>
+                    </div>
+                </div>  
+        </div>
+        <div class="schermata">
+                <div class="meteo_cinque_giorni">
+                    <div class="container">
+                        <div>
+                            <div class="temp_gg_1">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_gg_1">
+                            <div class="giorno_1">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_gg_2">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_gg_2">
+                            <div class="giorno_2">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_gg_3">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_gg_3">
+                            <div class="giorno_3">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_gg_4">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_gg_4">
+                            <div class="giorno_4">Ora</div>
+                        </div>
+                        <div>
+                            <div class="temp_gg_5">Temp</div>
+                            <img src="icone/sun.png" class="logo_meteo_gg_5">
+                            <div class="giorno_5">Ora</div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>    
+    <script>
+        const chiamata_temp_ora = "https://api.openweathermap.org/data/2.5/weather?lat=44.0148355&lon=10.3910521&appid=4ed594bece97043d34e4676bb6097b94&units=metric";
+        const chiamata_temp_cinqueore = "https://api.openweathermap.org/data/2.5/forecast?lat=44.0148355&lon=10.3910521&appid=4ed594bece97043d34e4676bb6097b94&units=metric";
+        const giorno = new Date();
+        let giorno_attuale = giorno.getDate() + 1;
+        async function meteoDati_attuali() {
+            const chiamata_meteo_attuale = await fetch(chiamata_temp_ora);
+            var dati_attuali = await chiamata_meteo_attuale.json();
+            const element = document.querySelector(".meteo_attuale");
+            document.querySelector(".temperatura_attuale").innerHTML = Math.round(dati_attuali .main.temp) + "°";
+            if(dati_attuali.weather[0].main == "Clouds"){
+                    element.style.background = "linear-gradient(28deg,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 68%, rgba(83, 102, 110, 0.55) 100%)"; 
+                } else if (mainWeather == "Rain"){
+                    element.style.background = "linear-gradient(28deg,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 68%, rgba(83, 163, 237, 0.55) 100%)"; 
+                }
+                else{
+                    element.style.background = "linear-gradient(28deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 68%, rgba(237, 221, 83, 0.55) 100%)"; 
+                }
+        }
+        async function meteoDati_5ore() {
+            const chiamata_meteo_5ore = await fetch(chiamata_temp_cinqueore); 
+            const dati_meteo_5ore = await chiamata_meteo_5ore.json();
+            const primecinqueore = dati_meteo_5ore.list.slice(0, 5);
+            primecinqueore.forEach((element, index )=> {
+                const temp = Math.round(element.main.temp); 
+                const cielo = element.weather[0].main; 
+                const hour = new Date(element.dt * 1000).getUTCHours(); 
+                document.querySelector(".temp_" + (index + 1)).innerHTML = temp + "°"; 
+                document.querySelector(".ora_" + (index + 1)).innerHTML = hour;
+                const logo = document.querySelector(".logo_meteo_" + (index + 1));
+                if(cielo == "Clouds"){
+                    logo.src = "icone/cloudy.png"
+                } else if (cielo == "Rain"){
+                    logo.src = "icone/rainy.png"
+                    
+                }
+                else{
+                    logo.src = "icone/sun.png"
+                }
+            });
+        }
+        async function meteoDati_5Giorni() {
+            const chiamata_meteo_5giorni = await fetch(chiamata_temp_cinqueore);
+            const data_grezzi = await chiamata_meteo_5giorni.json();
+            let repeat = 1;
+            data_grezzi.list.forEach(element  => {
+                data_da_calcolare = new Date(element.dt * 1000).getDate();
+                ora_da_calcolare = new Date(element.dt * 1000).getUTCHours();
+                if (data_da_calcolare == giorno_attuale && ora_da_calcolare == 12) {
+                    const temp = element.main.temp;
+                    const cielo = element.weather[0].main;
+                    const logo_giorni = document.querySelector(".logo_meteo_gg_" + (repeat));
+                    document.querySelector(".temp_gg_" + (repeat)).innerHTML = Math.round(temp) + "°"; 
+                    document.querySelector(".giorno_" + (repeat)).innerHTML = data_da_calcolare;
+                    if(cielo == "Clouds"){
+                        logo_giorni.src = "icone/cloudy.png"
+                    } else if (cielo == "Rain"){
+                        logo_giorni.src = "icone/rainy.png"
+                        
+                    }
+                    else{
+                        logo_giorni.src = "icone/sun.png"
+                    }
+                    if (repeat != 5){
+                        giorno_attuale += 1;
+                    repeat += 1;
+                }
+               }
+               
+        });
+        }
+        meteoDati_attuali()
+        meteoDati_5ore()
+        meteoDati_5Giorni()
+
+        const screens = document.querySelectorAll('.schermata');
+        let currentIndex = 0;
+
+        function showScreen(index) {
+        screens.forEach((screen, i) => {
+            screen.style.transform = `translateX(${(i - index) * 100}%)`;
+        });
+}
+        showScreen(currentIndex);
+        const widget = document.querySelector('.widget');
+        widget.addEventListener('click', (e) => {
+        const rect = widget.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        if (clickX < rect.width / 2 && currentIndex > 0) {
+            currentIndex--;
+        } else if (clickX >= rect.width / 2 && currentIndex < screens.length - 1) {
+            currentIndex++;
+        }
+        showScreen(currentIndex);
+        });
+    </script>
+</body>
+</html>

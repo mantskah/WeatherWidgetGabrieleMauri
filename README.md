@@ -1,10 +1,10 @@
 # WeatherWidgetGabrieleMauri
+### Non avendo implementato lo swipe come da telefono, per scorrere le pagine del widget è necessario clickare con il mouse a destra o a sinistra sul widget stesso.
 
 ## Introduzione:
 Per svolgere l’esercitazione fornita ho utilizzato un file HTML e uno CSS.
 Per l’API ho utilizzato la versione gratuita di OpenWeather.
 A causa della versione gratuita di open weather non mi è stato possible reperire i dati ora per ora e giorno per giorno.
-
 Per ovviare a tale problema ho agito così:
 
 **Prima pagina:** Meteo corrente.
@@ -22,5 +22,4 @@ La seconda pagina, ho usato una griglia e diviso in piccoli “div” ognuno con
 
 La terza pagina, simile alla seconda, usa una griglia dove vengono mostrati i dati recuperati per i giorni a vernire.
 
-## Difficoltà:
-Non avendo nozione di come effettuare lo swipe come da telefono, ho proceduto a impostare in modo che clickando a destra e sinistra, le 3 pagine scorrano.
+
